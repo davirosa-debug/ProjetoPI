@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}Sessão - Bibliotroca{% endblock %}
+
+{% block content %}
+    <h2>Bem-vindo, {{ user.username }}!</h2>
+    <p>Você está na sua sessão privada.</p>
+    <a href="{% url 'sair' %}">Sair</a>
+{% endblock %}
