@@ -1,32 +1,30 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Bibliotroca{% endblock %}</title>
 </head>
 <body>
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'livros' %}">Livros</a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'cadastrar_livro' %}">Cadastrar Livro</a>
+        <a href="{% url 'sessao' %}">Sessão</a>
+        <a href="{% url 'sair' %}">Sair</a>
+        {% else %}
+        <a href="{% url 'cadastrar' %}">Cadastrar</a>
+        <a href="{% url 'logar' %}">Login</a>
+        {% endif %}
+    </nav>
 
-    <!-- Header Reutilizável -->
-    <header>
-        <h1>Bibliotroca</h1>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/cadastro">Cadastro</a>
-            <a href="/logar">Login</a>
-            <a href="/livros">Livros</a>
-        </nav>
-    </header>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 
-    <!-- Conteúdo da Página -->
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-
-    <!-- Footer Reutilizável -->
-    <footer>
-        <p>&copy; 2025 Bibliotroca. Todos os direitos reservados.</p>
-    </footer>
-
+    {% block content %}{% endblock %}
 </body>
 </html>
