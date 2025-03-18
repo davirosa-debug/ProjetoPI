@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ livro.nome }} - Bibliotroca{% endblock %}
+
+{% block content %}
+    <h1>{{ livro.nome }}</h1>
+    <img src="/media/livros/nome_da_foto.jpg" alt="{{ livro.nome }}">
+    <p>Gênero: {{ livro.genero }}</p>
+    <p>Postado por: {{ livro.usuario.username }}</p>
+
+    <h2>Chat</h2>
+    <div class="chat">
+        {% for mensagem in mensagens %}
+        <p>
+            <strong>{{ mensagem.usuario_remetente.username }}:</strong> {{ mensagem.conteudo }}
+            {% if mensagem.usuario_destinatario == user and not mensagem.lida %}
+            (Não lida)
+            {% endif %}
+        </p>
+        {% endfor %}
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <textarea name="mensagem" placeholder="Digite sua mensagem"></textarea><br>
+        <button type="submit">Enviar</button>
+    </form>
+{% endblock %}
