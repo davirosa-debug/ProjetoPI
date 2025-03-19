@@ -6,7 +6,7 @@
     <h1>{{ livro.nome }}</h1>
     <img src="{{ livro.foto.url }}" alt="{{ livro.nome }}" style="max-width: 100px;">
     <p>Gênero: {{ livro.genero }}</p>
-    <p>Postado por: {{ livro.usuario.username }}</p>
+    <p>Postado por: {{ livro.usuario.nome_completo }}</p>
 
     {% if livro.detalhes %}
         <h2>Detalhes</h2>
@@ -22,7 +22,7 @@
     <div class="chat">
         {% for mensagem in mensagens %}
         <p>
-            <strong>{{ mensagem.usuario_remetente.username }}:</strong> {{ mensagem.conteudo }}
+            <strong>{{ mensagem.usuario_remetente.nome_completo }}:</strong> {{ mensagem.conteudo }}
             {% if mensagem.usuario_destinatario == user and not mensagem.lida %}
                 (Não lida)
             {% endif %}

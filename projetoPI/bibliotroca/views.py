@@ -41,15 +41,13 @@ def logar(request):
         user = authenticate(request, username=email, password=senha)
         if user is not None:
             login(request, user)
-            return redirect("sessao")
+            return redirect("home")
         else:
             return render(request, "registration/login.html", {"error": "E-mail ou senha inválidos"})
 
     return render(request, "registration/login.html")
 
-@login_required
-def sessao(request):
-    return render(request, "sessao.html")
+
 
 def sair(request):
     logout(request)

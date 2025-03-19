@@ -1,8 +1,27 @@
+
 {% extends 'base.html' %}
 
-{% block title %}Home - Bibliotroca{% endblock %}
-
 {% block content %}
-    <h2>Bem-vindo ao Bibliotroca!</h2>
-    <p>Plataforma para troca de livros.</p>
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            <h1>Bem-vindo(a), {% if user.nome_completo %}{{ user.nome_completo }}{% else %}{{ user.username }}{% endif %}!</h1>
+            <p>Um livro trocado é uma nova história compartilhada.</p>
+        {% else %}
+            <h1>Bem-vindo á Bibliotroca!</h1>
+            <p>Faça login ou cadastre-se para acessar mais recursos.</p>
+            <p> Troque livros, descubra novos mundos e desperte sua paixão pela leitura.<br> 
+                Cada página compartilhada é um passo rumo ao conhecimento e á imaginação! </p>
+        {% endif %}
+
+      
+    </div>
 {% endblock %}
