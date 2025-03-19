@@ -4,9 +4,19 @@
 
 {% block content %}
     <h1>{{ livro.nome }}</h1>
-    <img src="/media/livros/nome_da_foto.jpg" alt="{{ livro.nome }}">
+    <img src="{{ livro.foto.url }}" alt="{{ livro.nome }}" style="max-width: 100px;">
     <p>Gênero: {{ livro.genero }}</p>
     <p>Postado por: {{ livro.usuario.username }}</p>
+
+    {% if livro.detalhes %}
+        <h2>Detalhes</h2>
+        <p>{{ livro.detalhes }}</p>
+    {% endif %}
+
+    {% if user == livro.usuario %}
+        <a href="{% url 'excluir_livro' livro.id %}" class="btn btn-danger">Excluir Livro</a>
+        <hr>
+    {% endif %}
 
     <h2>Chat</h2>
     <div class="chat">
@@ -14,7 +24,7 @@
         <p>
             <strong>{{ mensagem.usuario_remetente.username }}:</strong> {{ mensagem.conteudo }}
             {% if mensagem.usuario_destinatario == user and not mensagem.lida %}
-            (Não lida)
+                (Não lida)
             {% endif %}
         </p>
         {% endfor %}

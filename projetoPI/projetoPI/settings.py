@@ -56,7 +56,7 @@ ROOT_URLCONF = 'projetoPI.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,6 +68,8 @@ TEMPLATES = [
         },
     },
 ]
+
+LOGIN_TEMPLATE = 'login.html'
 
 WSGI_APPLICATION = 'projetoPI.wsgi.application'
 

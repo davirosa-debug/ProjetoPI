@@ -43,9 +43,9 @@ def logar(request):
             login(request, user)
             return redirect("sessao")
         else:
-            return render(request, "login.html", {"error": "E-mail ou senha inválidos"})
+            return render(request, "registration/login.html", {"error": "E-mail ou senha inválidos"})
 
-    return render(request, "login.html")
+    return render(request, "registration/login.html")
 
 @login_required
 def sessao(request):
@@ -73,6 +73,9 @@ def livros(request):
     livros = Livro.objects.all().order_by('nome')
     return render(request, 'livros.html', {'livros': livros})
 
+
+
+@login_required
 def detalhes_livro(request, livro_id):
     livro = get_object_or_404(Livro, pk=livro_id)
     mensagens = Mensagem.objects.filter(livro=livro).order_by('data_envio')

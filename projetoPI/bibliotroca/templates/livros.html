@@ -17,7 +17,14 @@
         {% for livro in livros %}
             <li>
                 <img src="{{ livro.foto.url }}" alt="{{ livro.nome }}" style="max-width: 100px;">
-                <a href="{% url 'detalhes_livro' livro.id %}">{{ livro.nome }}</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'detalhes_livro' livro.id %}">{{ livro.nome }}</a>
+                {% else %}
+                    <a href="{% url 'logar' %}?next={% url 'detalhes_livro' livro.id %}" style="cursor: pointer;">
+                        {{ livro.nome }}
+                        <small class="text-muted">Crie seu cadastro e realize seu login para ver detalhes.</small>
+                    </a>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>
