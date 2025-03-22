@@ -1,27 +1,28 @@
-
 {% extends 'base.html' %}
 
+{% block title %}Home - Bibliotroca{% endblock %}
+
 {% block content %}
-    <div class="container">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        {% endif %}
+    <h1>Bem-vindo à Bibliotroca!</h1>
 
-        {% if user.is_authenticated %}
-            <h1>Bem-vindo(a), {% if user.nome_completo %}{{ user.nome_completo }}{% else %}{{ user.username }}{% endif %}!</h1>
-            <p>Um livro trocado é uma nova história compartilhada.</p>
-        {% else %}
-            <h1>Bem-vindo á Bibliotroca!</h1>
-            <p>Faça login ou cadastre-se para acessar mais recursos.</p>
-            <p> Troque livros, descubra novos mundos e desperte sua paixão pela leitura.<br> 
-                Cada página compartilhada é um passo rumo ao conhecimento e á imaginação! </p>
+    {% if user.is_authenticated %}
+    <p>Olá, {{ user.nome_completo }}!</p>
+        <p><a href="{% url 'mensagens_recebidas' %}">Ver Mensagens Recebidas</a>
+        {% if mensagens_nao_lidas > 0 %}
+            <span style="color: red;">({{ mensagens_nao_lidas }})</span>
         {% endif %}
+        </p>
+     
+    {% else %}
+        <p>Bem-vindo(a) à Bibliotroca! Faça login ou cadastre-se para começar.</p>
+     
+    {% endif %}
 
-      
-    </div>
+    <p class="slogan">Trocar livros é semear ideias, espalhar histórias e transformar vidas — um gesto que cultiva o poder das palavras.</p>
+
+{% if messages %}
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+{% endif %}
 {% endblock %}

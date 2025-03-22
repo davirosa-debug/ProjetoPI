@@ -18,21 +18,45 @@
         <hr>
     {% endif %}
 
-    <h2>Chat</h2>
+    <h2>Chat Público</h2>
     <div class="chat">
-        {% for mensagem in mensagens %}
-        <p>
-            <strong>{{ mensagem.usuario_remetente.nome_completo }}:</strong> {{ mensagem.conteudo }}
-            {% if mensagem.usuario_destinatario == user and not mensagem.lida %}
-                (Não lida)
-            {% endif %}
-        </p>
+        {% for mensagem in mensagens_publicas %}
+            <p>
+                <strong>{{ mensagem.usuario_remetente.nome_completo }}:</strong> {{ mensagem.conteudo }}
+                {% if mensagem.usuario_destinatario == user and not mensagem.lida %}
+                    (Não lida)
+                {% endif %}
+            </p>
         {% endfor %}
     </div>
 
-    <form method="post">
-        {% csrf_token %}
-        <textarea name="mensagem" placeholder="Digite sua mensagem"></textarea><br>
-        <button type="submit">Enviar</button>
-    </form>
+    {% if request.user.is_authenticated %}
+        <form method="post" action="{% url 'enviar_mensagem_publica' livro.id %}">
+            {% csrf_token %}
+            <textarea name="mensagem" placeholder="Digite sua mensagem"></textarea><br>
+            <button type="submit">Enviar</button>
+        </form>
+
+        <h2>Chat Privado</h2>
+        <div class="chat">
+            {% for mensagem in mensagens_privadas %}
+                <p>
+                    <strong>{{ mensagem.remetente.nome_completo }}:</strong> {{ mensagem.conteudo }}
+                </p>
+            {% endfor %}
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Enviar Mensagem Privada</button>
+        </form>
+
+    {% endif %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
 {% endblock %}

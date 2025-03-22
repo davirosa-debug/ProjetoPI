@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Mensagens Recebidas - Bibliotroca{% endblock %}
+
+{% block content %}
+    <h1>Mensagens Recebidas</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    {% if mensagens %}
+        <ul>
+        {% for mensagem in mensagens %}
+            <li>
+                <strong>De:</strong> {{ mensagem.remetente.nome_completo }}<br>
+                <strong>Conteúdo:</strong> {{ mensagem.conteudo }}
+                {% if not mensagem.lida %}
+                    <span style="color: red;">(Não Lida)</span>
+                {% endif %}
+                <br>
+                <form method="post" action="" style="margin-top: 10px;">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="hidden" name="remetente_id" value="{{ mensagem.remetente.id }}">
+                    <button type="submit">Responder</button>
+                </form>
+                <a href="{% url 'excluir_mensagem' mensagem.id %}">Excluir</a> |
+                <hr>
+            </li>
+        {% empty %}
+            <p>Você não possui nenhuma mensagem recebida.</p>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Você não possui nenhuma mensagem recebida.</p>
+    {% endif %}
+
+    <p><a href="{% url 'home' %}">Voltar para a Página Inicial</a></p>
+{% endblock %}

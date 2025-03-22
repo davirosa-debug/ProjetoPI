@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.conf import settings  
+from django.contrib.auth.models import User
 
 class Usuario(AbstractUser):
     nome_completo = models.CharField(max_length=255)
@@ -22,12 +23,22 @@ class Livro(models.Model):
         return self.nome
 
 class Mensagem(models.Model):
-    livro = models.ForeignKey(Livro, on_delete=models.CASCADE)
-    usuario_remetente = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='mensagens_enviadas')
-    usuario_destinatario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='mensagens_recebidas')
+    livro = models.ForeignKey(Livro, on_delete=models.CASCADE, related_name='mensagens') # Adicionei um related_name para Livro
+    usuario_remetente = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='mensagens_enviadas_publicas')
+    usuario_destinatario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='mensagens_recebidas_publicas')
     conteudo = models.TextField()
     data_envio = models.DateTimeField(auto_now_add=True)
     lida = models.BooleanField(default=False)
 
     def __str__(self):
         return f"De {self.usuario_remetente.username} para {self.usuario_destinatario.username} sobre {self.livro.nome}"
+
+class MensagemPrivada(models.Model):
+    remetente = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='mensagens_privadas_enviadas')
+    destinatario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='mensagens_privadas_recebidas')
+    conteudo = models.TextField()
+    lida = models.BooleanField(default=False)
+    criado_em = models.DateTimeField(auto_now_add=True) # Exemplo de campo de data
+
+    def __str__(self):
+        return f'De {self.remetente.nome_completo} para {self.destinatario.nome_completo}'
